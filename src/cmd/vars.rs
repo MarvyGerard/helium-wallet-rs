@@ -137,7 +137,7 @@ mod tests {
 
     use super::*;
     const EXPECTED_JSON: &str = "{\"cancels\":[\"foo\"],\"key_proof\":null,\"master_key\":null,\"multi_key_proofs\":[],\
-        \"multi_keys\":[\"398hLeHESZHE5jVtaLAV5fdg2vrUeZEs2B92t7TzeQTtuimEkN\"],\
+        \"multi_keys\":[\"1398hLeHESZHE5jVtaLAV5fdg2vrUeZEs2B92t7TzeQTtugr8dL\"],\
         \"multi_proofs\":[],\"nonce\":55,\"proof\":null,\"type\":\"vars_v1\",\"unsets\":[\"foobar\"],\
             \"vars\":[{\"name\":\"foo\",\"value\":5}],\
         \"version_predicate\":0}";
