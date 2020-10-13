@@ -100,7 +100,6 @@ impl Create {
 
 #[derive(Debug)]
 struct VarSet(BlockchainVarV1);
-
 impl FromStr for VarSet {
     type Err = Box<dyn std::error::Error>;
 
@@ -129,5 +128,28 @@ impl FromStr for VarSet {
             _ => return Err(format!("Invalid variable value {}", value.to_string()).into()),
         };
         Ok(VarSet(var))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use helium_api::Message;
+
+    use super::*;
+    const EXPECTED_JSON: &str = "{\"cancels\":[\"foo\"],\"key_proof\":null,\"master_key\":null,\"multi_key_proofs\":[],\
+        \"multi_keys\":[\"398hLeHESZHE5jVtaLAV5fdg2vrUeZEs2B92t7TzeQTtuimEkN\"],\
+        \"multi_proofs\":[],\"nonce\":55,\"proof\":null,\"type\":\"vars_v1\",\"unsets\":[\"foobar\"],\
+            \"vars\":[{\"name\":\"foo\",\"value\":5}],\
+        \"version_predicate\":0}";
+    #[test]
+    fn test_json_out() {
+        use crate::traits::ToJson;
+
+        let buffer: Vec<u8> = vec![10, 13, 10, 3, 102, 111, 111, 18, 3, 105, 110, 116, 26, 1, 53, 50, 3, 102, 111, 111, 58, 6, 102, 111, 111, 98, 97, 114, 64, 55, 74, 33, 1, 25, 219, 194, 144, 235, 130, 80, 231, 186, 82, 193, 215, 103, 253, 15, 16, 156, 71, 176, 234, 211, 140, 137, 181, 57, 244, 126, 100, 21, 117, 29, 181];
+        let proto  =
+            BlockchainTxnVarsV1::decode(buffer.as_slice()).unwrap();
+
+        let json = proto.to_json().unwrap().to_string();
+        assert_eq!(json, EXPECTED_JSON);
     }
 }
