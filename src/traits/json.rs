@@ -26,8 +26,8 @@ pub trait ToJson {
 }
 
 impl<T> ToJson for Vec<T>
-where
-    T: ToJson,
+    where
+        T: ToJson,
 {
     fn to_json(&self) -> Result<serde_json::Value> {
         let mut seq = Vec::with_capacity(self.len());
@@ -64,21 +64,7 @@ fn vec_to_b64_urls(vec: &[Vec<u8>]) -> Result<Vec<String>> {
 
 impl ToJson for BlockchainTxnVarsV1 {
     fn to_json(&self) -> Result<serde_json::Value> {
-        let map = json!({
-            "type": "vars_v1",
-            "version_predicate": self.version_predicate,
-            "nonce": self.nonce,
-            "proof": maybe_b64_url(&self.proof)?,
-            "master_key": maybe_b58(&self.master_key)?,
-            "key_proof": maybe_b64_url(&self.key_proof)?,
-            "vars": self.vars.to_json()?,
-            "unsets": vec_to_strings(&self.unsets)?,
-            "cancels": vec_to_strings(&self.cancels)?,
-            "multi_keys": vec_to_b58s(&self.multi_keys)?,
-            "multi_proofs": vec_to_b64_urls(&self.multi_proofs)?,
-            "multi_key_proofs": vec_to_b64_urls(&self.multi_key_proofs)?,
-        });
-        Ok(map)
+        Ok(serde_json::Value::String(serde_json::to_string(self).unwrap()))
     }
 }
 
